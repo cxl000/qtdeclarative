@@ -1,6 +1,6 @@
 Name:       qt5-qtdeclarative
 Summary:    Qt Declarative library
-Version:    5.0.2
+Version:    5.2.0
 Release:    1%{?dist}
 Group:      Qt/Qt
 License:    LGPLv2.1 with exception or GPLv3
@@ -12,7 +12,6 @@ BuildRequires:  qt5-qtnetwork-devel
 BuildRequires:  qt5-qtopengl-devel
 BuildRequires:  qt5-qtsql-devel
 BuildRequires:  qt5-qttest-devel
-BuildRequires:  qt5-qtv8-devel
 BuildRequires:  qt5-qtwidgets-devel
 BuildRequires:  qt5-qtxmlpatterns-devel
 BuildRequires:  qt5-qmake
@@ -112,6 +111,14 @@ This package contains the development headers for QtQmlDevTools
 
 
 #### Small plugin and import packages
+
+%package import-settingsplugin
+Summary:    Qt Declarative settings plugin
+Group:      Qt/Qt
+Requires:   %{name} = %{version}-%{release}
+
+%description import-settingsplugin
+This package provides the QtQml settings plugin
 
 %package import-folderlistmodel
 Summary:    Qt Declarative folderlistmodel plugin
@@ -249,9 +256,10 @@ This package contains QML debugging and development tools
 #### Build section
 
 %prep
-%setup -q -n %{name}-%{version}/qtdeclarative
+%setup -q
 
 %build
+cd upstream
 export QTDIR=/usr/share/qt5
 touch .git
 
@@ -259,6 +267,7 @@ qmake -qt=5
 make %{?_smp_mflags}
 
 %install
+cd upstream
 rm -rf %{buildroot}
 %qmake5_install
 # Fix wrong path in pkgconfig files
@@ -313,6 +322,9 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 
 %files
 %defattr(-,root,root,-)
+%{_qt5_bindir}/qml
+%{_qt5_bindir}/qmlimportscanner
+%{_qt5_bindir}/qmljs
 %{_libdir}/libQt5Qml.so.5
 %{_libdir}/libQt5Qml.so.5.*
 
@@ -325,6 +337,7 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 %{_libdir}/pkgconfig/Qt5Qml.pc
 %{_includedir}/qt5/QtQml/
 %{_datadir}/qt5/mkspecs/modules/qt_lib_qml.pri
+%{_datadir}/qt5/mkspecs/modules/qt_lib_qml_private.pri
 %{_libdir}/cmake/
 
 
@@ -340,6 +353,7 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 %{_libdir}/pkgconfig/Qt5Quick.pc
 %{_includedir}/qt5/QtQuick/
 %{_datadir}/qt5/mkspecs/modules/qt_lib_quick.pri
+%{_datadir}/qt5/mkspecs/modules/qt_lib_quick_private.pri
 
 
 
@@ -358,6 +372,12 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 %{_qt5_bindir}/qmlmin
 %{_qt5_bindir}/qmlbundle
 
+
+%files import-settingsplugin
+%defattr(-,root,root,-)
+%{_libdir}/qt5/qml/Qt/labs/settings/libqmlsettingsplugin.so
+%{_libdir}/qt5/qml/Qt/labs/settings/plugins.qmltypes
+%{_libdir}/qt5/qml/Qt/labs/settings/qmldir
 
 %files import-folderlistmodel
 %defattr(-,root,root,-)
@@ -429,6 +449,7 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 %{_libdir}/libQt5QuickTest.prl
 %{_libdir}/pkgconfig/Qt5QuickTest.pc
 %{_datadir}/qt5/mkspecs/modules/qt_lib_qmltest.pri
+%{_datadir}/qt5/mkspecs/modules/qt_lib_qmltest_private.pri
 
 %files qtquickparticles
 %defattr(-,root,root,-)
@@ -441,7 +462,7 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 %{_libdir}/libQt5QuickParticles.so
 %{_libdir}/libQt5QuickParticles.prl
 %{_libdir}/pkgconfig/Qt5QuickParticles.pc
-%{_datadir}/qt5/mkspecs/modules/qt_lib_quickparticles.pri
+%{_datadir}/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri
 
 %files qtdeclarativetools-devel
 %defattr(-,root,root,-)
@@ -449,7 +470,7 @@ cp lib/libQt5QmlDevTools.a %{buildroot}/%{_libdir}
 %{_libdir}/libQt5QmlDevTools.a
 %{_libdir}/libQt5QmlDevTools.prl
 %{_libdir}/pkgconfig/Qt5QmlDevTools.pc
-%{_datadir}/qt5/mkspecs/modules/qt_lib_qmldevtools.pri
+%{_datadir}/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri
 
 
 
