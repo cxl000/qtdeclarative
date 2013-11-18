@@ -1,6 +1,6 @@
 Name:       qt5-qtdeclarative
 Summary:    Qt Declarative library
-Version:    5.0.2
+Version:    5.2.0
 Release:    1%{?dist}
 Group:      Qt/Qt
 License:    LGPLv2.1 with exception or GPLv3
@@ -12,7 +12,7 @@ BuildRequires:  qt5-qtnetwork-devel
 BuildRequires:  qt5-qtopengl-devel
 BuildRequires:  qt5-qtsql-devel
 BuildRequires:  qt5-qttest-devel
-BuildRequires:  qt5-qtv8-devel
+#BuildRequires:  qt5-qtv8-devel
 BuildRequires:  qt5-qtwidgets-devel
 BuildRequires:  qt5-qtxmlpatterns-devel
 BuildRequires:  qt5-qmake
@@ -249,9 +249,10 @@ This package contains QML debugging and development tools
 #### Build section
 
 %prep
-%setup -q -n %{name}-%{version}/qtdeclarative
+%setup -q
 
 %build
+cd upstream
 export QTDIR=/usr/share/qt5
 touch .git
 
@@ -259,6 +260,7 @@ qmake -qt=5
 make %{?_smp_mflags}
 
 %install
+cd upstream
 rm -rf %{buildroot}
 %qmake5_install
 # Fix wrong path in pkgconfig files
