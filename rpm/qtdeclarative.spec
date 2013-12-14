@@ -256,7 +256,9 @@ This package contains QML debugging and development tools
 #### Build section
 
 %prep
-%setup -q
+#%setup -q
+%setup -q -n %{name}-%{version}/upstream
+
 
 %build
 cd upstream
