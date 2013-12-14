@@ -261,7 +261,7 @@ This package contains QML debugging and development tools
 
 
 %build
-cd upstream
+#cd upstream
 export QTDIR=/usr/share/qt5
 touch .git
 
@@ -269,7 +269,7 @@ qmake -qt=5
 make %{?_smp_mflags}
 
 %install
-cd upstream
+#cd upstream
 rm -rf %{buildroot}
 %qmake5_install
 # Fix wrong path in pkgconfig files
